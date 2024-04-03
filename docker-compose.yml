@@ -1,0 +1,28 @@
+version: '2.4'
+
+services:
+  java_app:
+    container_name: truechoice_java_app
+    image: francescoxx/truechoice:1.0.0
+    build: .
+    ports:
+      - 8081:8081
+    environment:
+      - DATABASE_URL=jdbc:postgresql://java_db:5432/truechoice
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=123
+    depends_on:
+      - java_db
+  java_db:
+    container_name: truechoice_java_db
+    image: postgres:10
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: 123
+      POSTGRES_USER: postgres
+      POSTGRES_DB: truechoice
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata: {}
